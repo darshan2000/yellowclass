@@ -46,7 +46,9 @@ print('start');
 
     final box = Boxes.getMovies();
     //await box.delete(key);
-    box.put(key.toString(), movieModel);
+   // box.put(key.toString(), movieModel);
+    box.add(movieModel);
+    await box.delete(key);
     //await box.delete(key);
    //movieModel.save();
     notifyListeners();

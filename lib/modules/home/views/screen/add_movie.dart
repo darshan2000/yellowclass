@@ -15,7 +15,7 @@ class AddMovie extends StatefulWidget {
 }
 
 class _AddMovieState extends State<AddMovie> {
-
+  final _formKey = GlobalKey<FormState>();
   late String name, dir, img;
  // late Future<File> imageFile;
 
@@ -36,6 +36,7 @@ class _AddMovieState extends State<AddMovie> {
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: width/30),
         child: Form(
+          key: _formKey,
           child: ListView(
             children: [
               AppText.SubHeading(text: 'Add Movie', size: 20.0),
@@ -46,6 +47,16 @@ class _AddMovieState extends State<AddMovie> {
                 onChanged: (val){
                   name = val;
                 },
+                validator: (val){
+                  if(val!.isEmpty || val == ''){
+                    return 'Please enter a movie';
+                  }
+                  else{
+                    return null;
+                  }
+                },
+                keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   labelText: 'Movie Name',
                   border: OutlineInputBorder(
@@ -58,6 +69,16 @@ class _AddMovieState extends State<AddMovie> {
                 onChanged: (val){
                   dir = val;
                 },
+                validator: (val){
+                  if(val!.isEmpty || val == ''){
+                    return 'Please enter a Director';
+                  }
+                  else{
+                    return null;
+                  }
+                },
+                keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                     labelText: 'Director',
                     border: OutlineInputBorder(
@@ -70,6 +91,14 @@ class _AddMovieState extends State<AddMovie> {
                 onChanged: (val){
                   img = val;
                 },
+                validator: (val){
+                  if(val!.isEmpty || val == ''){
+                    return 'Please enter a poster';
+                  }
+                  else{
+                    return null;
+                  }
+                },
                 decoration: InputDecoration(
                     labelText: 'Movie Poster',
                     border: OutlineInputBorder(
@@ -81,14 +110,16 @@ class _AddMovieState extends State<AddMovie> {
               Center(
                 child: GestureDetector(
                     onTap: (){
-                      movieService.addMovie(name, dir,img);
-                      Fluttertoast.showToast(msg: 'Movie added!',     fontSize: 20,
-                          textColor: Colors.white,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black,
-                          gravity: ToastGravity.BOTTOM,
-                          toastLength: Toast.LENGTH_LONG);
-                      Navigator.pop(context);
+                      if (_formKey.currentState!.validate()) {
+                        movieService.addMovie(name, dir,img);
+                        Fluttertoast.showToast(msg: 'Movie added!',     fontSize: 20,
+                            textColor: Colors.white,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            gravity: ToastGravity.BOTTOM,
+                            toastLength: Toast.LENGTH_LONG);
+                        Navigator.pop(context);
+                      }
                     },
                   child: Material(
                       borderRadius: BorderRadius.circular(10),

@@ -4,6 +4,6 @@ import 'package:intl/intl.dart';
 class DateConverter{
 
  static String convert(int timeStamp){
-   return DateFormat(DateFormat.ABBR_MONTH_DAY).format(DateTime.fromMillisecondsSinceEpoch(timeStamp));
+   return DateFormat(DateFormat.HOUR_MINUTE).format(DateTime.fromMillisecondsSinceEpoch(timeStamp));
  }
 }

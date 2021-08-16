@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:yellow_class/modules/home/data/models/movie_model.dart';
+import 'package:yellow_class/modules/home/data/services/auth.dart';
 import 'package:yellow_class/modules/home/data/services/movie_service.dart';
 import 'package:yellow_class/modules/home/views/screen/homepage.dart';
 import 'package:yellow_class/modules/home/views/screen/loginPage.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
    providers: [
      ChangeNotifierProvider<MovieService>(
        create: (context) => MovieService(),
+     ),
+     ChangeNotifierProvider<AuthService>(
+       create: (context) => AuthService(),
      ),
    ],
       child: MaterialApp(

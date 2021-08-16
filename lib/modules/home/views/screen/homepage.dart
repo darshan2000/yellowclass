@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:yellow_class/modules/home/data/models/movie_model.dart';
+import 'package:yellow_class/modules/home/data/services/auth.dart';
 import 'package:yellow_class/modules/home/data/services/boxes.dart';
 import 'package:yellow_class/modules/home/data/services/movie_service.dart';
 import 'package:yellow_class/modules/home/views/screen/add_movie.dart';
 import 'package:yellow_class/modules/home/views/screen/edit_movie.dart';
+import 'package:yellow_class/modules/home/views/screen/loginPage.dart';
 import 'package:yellow_class/modules/home/views/widgets/movie_card.dart';
 import 'package:yellow_class/utilities/app_text.dart';
 import 'package:yellow_class/utilities/colors.dart';
@@ -37,6 +40,7 @@ class _HomePageState extends State<HomePage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     MovieService movieService = Provider.of<MovieService>(context);
+    AuthService auth = Provider.of<AuthService>(context);
     return Scaffold(
       backgroundColor: ThemeColors.whiteColor,
       floatingActionButton: FloatingActionButton.extended(onPressed: (){
@@ -52,10 +56,12 @@ class _HomePageState extends State<HomePage> {
         actions:[
           Padding(
             padding: EdgeInsets.only(right: 8.0),
-            child: CircleAvatar(
-              radius: 15,
-              backgroundColor: Colors.amber,
-            ),
+            child: IconButton(onPressed: (){
+              auth.logOut();
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+            }, icon: Icon(
+              Icons.power_settings_new, color: Colors.black,
+            )),
           ),
         ]
       ),
@@ -68,7 +74,7 @@ class _HomePageState extends State<HomePage> {
 
             return  Padding(
         padding:  EdgeInsets.symmetric(horizontal: width/30),
-        child: box.isEmpty ? Center(child: AppText.SubHeading(text: 'No movies added yet..'),) :  ListView(
+        child:   ListView(
           //physics: NeverScrollableScrollPhysics(),
           children: [
             AppText.SubHeading(text: 'Hello Darshan', size: 20.0),
@@ -77,7 +83,18 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 20,),
             Padding(
               padding:  EdgeInsets.symmetric(horizontal: 3),
-              child: ListView.separated(
+              child: box.isEmpty ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: height/5,),
+                  Container(
+                    height: 200, width: 200,
+                    child: Lottie.asset('assets/ani/watch.json'),
+                  ),
+                  Center(child: AppText.SubHeading(text: 'No movies added yet..'),),
+                ],
+              ) :ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context,index){
